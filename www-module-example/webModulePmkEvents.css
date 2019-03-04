@@ -29,16 +29,3 @@
     display: block;
     margin: 5px 0px;    
 }
-.pmk_event_map_url>* {
-    border-radius: 6px;
-    border: 1px solid #b1b1b1;
-    background-color: #7b7b7b;
-    padding: 3px 7px;
-    
-    color: white;
-    text-decoration: solid;
-}
-.pmk_event_map_url>*:hover {
-    background-color: #9b8888;
-    
-}

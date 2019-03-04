@@ -9,7 +9,7 @@ var monthNames = [
 function loadEvents() {
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'http://localhost/pmk_events/api/getEventsByPmk.php?days=14&pmk=2', true);
+  request.open('GET', 'http://www.pmk-bielefeld.de/pmkEvents/api/getEventsByPmk.php?days=14&pmk=2', true);
   request.onload = function () {
     // Begin accessing JSON data here
     var data = JSON.parse(this.response);
@@ -46,7 +46,7 @@ function addEvent(mainDiv, event) {
   addEventColumn(node, event, "title");
   addEventColumn(node, event, "description");
   
-  addEventColumn(node, event, "address");
+  //addEventColumn(node, event, "address");
   addGoogleMapsLink(node, event);
   addEventColumn(node, event, "geoLatitude");
   addEventColumn(node, event, "geoLongitude");  
@@ -69,7 +69,7 @@ function addGoogleMapsLink(nodeDiv, event) {
 
   var a = document.createElement('a');
   a.href =  url;
-  a.innerHTML = "Google Map";
+  a.innerHTML = event.address;
   a.setAttribute('target', '_blank');
 
   col.appendChild(a);
