@@ -1,0 +1,44 @@
+.pmk_event_div {
+    color: rgb(32, 32, 32);
+    border: 1px solid #b1b1b1;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.pmk_event_detail_div {
+    display: inline-block;
+    
+}
+
+.pmk_event_detail_title {
+    font-weight: bolder;
+    display: block;
+}
+
+.pmk_event_detail_geoLongitude {
+    display: none;
+}
+
+.pmk_event_detail_geoLatitude {
+    display: none;
+}
+
+.pmk_event_map_url {
+    display: block;
+    margin: 5px 0px;    
+}
+.pmk_event_map_url>* {
+    border-radius: 6px;
+    border: 1px solid #b1b1b1;
+    background-color: #7b7b7b;
+    padding: 3px 7px;
+    
+    color: white;
+    text-decoration: solid;
+}
+.pmk_event_map_url>*:hover {
+    background-color: #9b8888;
+    
+}
