@@ -71,8 +71,10 @@ class iCalCache
                 info("Getting events by date (" . $dateFrom . " - " . $dateTo . ")");
                 $events = $iCal->eventsByDateBetween($dateFrom, $dateTo);
                 
-                info("Store extracted events");
-                $this->storeEvents($id, $events);
+                info("Store extracted events");                
+                $eventDbList = $this->mapDbEvents($id, $events);
+                debug_r("Event to be inserted", $eventDbList);
+                $icalEvents->insertEvents($eventDbList);
             }
         }
 
@@ -82,15 +84,17 @@ class iCalCache
     }
 
 
-    private function storeEvents($pmk_id = null, $events = []) {
+    private function mapDbEvents($pmk_id = null, $events = []) {
         
         $addressMap = [];
+        $eventList = [];
 
         if (sizeof($events) > 0) {
-            $separator = '';
-            $sql = 'INSERT INTO ical_events (pmk_id, uid, title, description, dateTimeStart,  address, geoLatitude, geoLongitude, country) values ';
+            
             foreach ($events as $date => $events) {
 	            foreach ($events as $event) {
+
+                    // compute location
                     $geoLatitude = 'NULL';
                     $geoLongitude = 'NULL';                
                     if (isset($this->locations[$event->location])) {
@@ -99,37 +103,33 @@ class iCalCache
                             $geoLatitude = $evntLoc["geoLatitude"];
                             $geoLongitude = $evntLoc["geoLongitude"];                        
                         } else {                        
-                            debug_r("Empty coordinates in cache", $evntLoc);                    
+                            error("Geocoding not yet specified in locaiton cache.");                                                
                         }
                     
                     } else {
                         error("No geocoding found for location: ". $event->location);                                                       
                     }
 
-                    $sql .= $separator. '(';                
-                    $sql .= '\''.$pmk_id.'\', ';
-                    $sql .= '\''.$event->uid.'\', ';
-                    $sql  .= '\''.$event->title().'\', ';
-                    $sql .= '\''.$event->description().'\', ';
-                    $sql .= '\''.$date.' '.$event->godzina.':00\','; //dateTimeStart                
-                    $sql .= '\''.$event->location.'\','; // address
-                    $sql .= ''.$geoLatitude.','; // geoLatitude
-                    $sql .= ''.$geoLongitude.','; // geoLongitude
-                    $sql .= '\'de\')';                
-                    $separator = ', ';
+
+                    $eventDB = array(
+                        "pmk_id" => $pmk_id,
+                        "uid" => $event->uid,
+                        "title" =>$event->title(),
+                        "description" => $event->description(),
+                        "dateTimeStart" => $date.' '.$event->godzina.':00',
+                        "address" => $event->location,
+                        "geoLatitude" =>$geoLatitude,
+                        "geoLongitude" => $geoLongitude,
+                        "country" => "de"
+                    );
+
+                    array_push($eventList ,$eventDB);                    
 
                     $addressMap[$event->location] = "address";
 		        }
 	        }
-        
-            debug_r("Events to be inserted", $events);
 
-            info("Insert events into ical_events");                
-            $stmt = $this->db_conn->prepare($sql);            
-            if ($stmt->execute() !== TRUE) {
-                error("Error inserting");
-                debug_r("SQL", $sql);
-            } 
+            return $eventList;            
         }
 
     }

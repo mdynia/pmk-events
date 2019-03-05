@@ -41,6 +41,37 @@ class ical_events
         return $stmt;
     }
 
+    public function insertEvents($eventsList = []) {
+
+        $separator = '';
+        $sql = 'INSERT INTO ical_events (pmk_id, uid, title, description, dateTimeStart,  address, geoLatitude, geoLongitude, country) values ';
+
+        foreach($eventsList as $event) {
+            $sql .= $separator . " (";
+            $sql .= "'".$event["pmk_id"]."', ";
+            $sql .= "'".$event["uid"]."', ";
+            $sql .= "'".$event["title"]."', ";
+            $sql .= "'".$event["description"]."', ";
+            $sql .= "'".$event["dateTimeStart"]."', ";
+            $sql .= "'".$event["address"]."', ";
+            $sql .= "".$event["geoLatitude"].", ";
+            $sql .= "".$event["geoLongitude"].", ";
+            $sql .= "'".$event["country"]."' ";            
+            $sql .= " )";
+            $separator = ', ';
+        }
+
+        $stmt = $this->db_conn->prepare($sql);
+        // execute query
+        if ($stmt->execute() !== TRUE) {
+            error("Error while inserting values ");
+            debug_r("sql", $sql);
+        } 
+
+        return $stmt;
+
+    }
+
 
     public function deleteTable() {
         $stmt = $this->db_conn->prepare('DELETE FROM ical_events');            
