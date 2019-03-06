@@ -158,6 +158,24 @@ class icsEvent {
 		}
 
 
+		///////////////////////
+		
+		// DTSTART;TZID=Europe/Berlin:20190217T110000
+		if (preg_match('`^DTSTART(?:;.+)?:([0-9]+)T([0-9]+)Z?`m', $content, $m)) {			
+			$this->_timeStart = strtotime($m[1]);		
+		}
+		// Date start
+		// DTSTART;TZID=Europe/Berlin:20190217T110000
+		if (preg_match('`^DTSTART(?:;.+)?:([0-9]+(T[0-9]+Z)?)`m', $content, $m)) {
+			$this->_timeStart = strtotime($m[1]);			
+		}
+		// Date end
+		// DTEND;TZID=Europe/Berlin:20190217T113000
+		if (preg_match('`^DTEND(?:;.+)?:([0-9]+(T[0-9]+Z)?)`m', $content, $m)) {
+			$this->_timeEnd = strtotime($m[1]);			
+		}
+		/////////////////////
+
 		// Exdate
 		if (preg_match_all('`^EXDATE(;.+)?:([0-9]+(T[0-9]+Z)?)`m', $content, $m)) {
 			foreach ($m[2] as $dates) {

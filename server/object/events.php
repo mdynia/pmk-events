@@ -17,8 +17,8 @@ class Event
     
     public function createTable() {
         // TABLE FOR ICAL FILES 
-        info("Checking existiance of `Event` table");                
-        $sql = "CREATE TABLE IF NOT EXISTS Event (
+        info("Checking existiance of `events` table");                
+        $sql = "CREATE TABLE IF NOT EXISTS events (
            id              INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
            pmk_id          INT(6),
            uid             VARCHAR(255),
@@ -38,7 +38,7 @@ class Event
 
         $stmt = $this->db_conn->prepare($sql);            
         if ($stmt->execute() !== TRUE) {
-            error("Error while querying `Event` table: " + $stmt->errorInfo());
+            error("Error while querying `events` table: " + $stmt->errorInfo());
         } 
 
         return $stmt;
@@ -47,7 +47,7 @@ class Event
     public function insertEvents($eventsList = []) {
 
         $separator = '';
-        $sql = 'INSERT INTO Event (pmk_id, uid, title, description, date_start, time_start, date_end, time_end, address, geoLatitude, geoLongitude, country) values ';
+        $sql = 'INSERT INTO events (pmk_id, uid, title, description, date_start, time_start, date_end, time_end, address, geoLatitude, geoLongitude, country) values ';
 
         foreach($eventsList as $event) {
             extract($event); 
@@ -81,9 +81,9 @@ class Event
 
 
     public function deleteTable() {
-        $stmt = $this->db_conn->prepare('DELETE FROM Event');            
+        $stmt = $this->db_conn->prepare('DELETE FROM events');            
         if ($stmt->execute() !== TRUE) {
-            error("Error deleting from `Event` table");
+            error("Error deleting from `events` table");
         } 
         return $stmt;
     }
@@ -97,6 +97,8 @@ class Event
 
         $query = "SELECT 
         tab.id,
+        tab.uid,
+        tab.pmk_id,
         tab.title, 
         tab.description, 
         tab.date_start,
@@ -108,19 +110,20 @@ class Event
         tab.geoLatitude, 
         tab.geoLongitude, 
         tab.country,
-        ( 6371
-        * acos( cos( radians($lat) )
-              * cos(  radians( tab.geoLatitude )   )
+        ceil( 
+            100 * 6371 * acos( 
+                cos(  radians($lat) )
+              * cos(  radians( tab.geoLatitude )  )
               * cos(  radians( tab.geoLongitude) - radians($lon) )
               + sin( radians($lat) )
               * sin( radians( tab.geoLatitude ) )
             )
-        ) AS distance 
-        FROM Event tab     
-        WHERE tab.dateTimeStart >= '$dateFrom' 
-        AND tab.dateTimeStart < '$dateTo'  
+        ) / 100.0 AS distance 
+        FROM events tab     
+        WHERE tab.date_start >= '$dateFrom' 
+        AND tab.date_start < '$dateTo'  
         AND tab.geoLatitude  > 0
-        ORDER BY distance ASC
+        ORDER BY distance ASC, tab.date_start ASC, tab.time_start ASC
         LIMIT 100";
     
         // prepare query statement
@@ -142,6 +145,8 @@ class Event
 
         $query = "SELECT 
         tab.id,
+        tab.uid,
+        tab.pmk_id,        
         tab.title, 
         tab.description, 
         tab.id,
@@ -156,11 +161,11 @@ class Event
         tab.geoLatitude, 
         tab.geoLongitude, 
         tab.country       
-        FROM Event tab     
-        WHERE tab.dateTimeStart >= '$dateFrom' 
-        AND tab.dateTimeStart < '$dateTo'      
+        FROM events tab     
+        WHERE tab.date_start >= '$dateFrom' 
+        AND tab.date_start < '$dateTo'      
         AND pmk_id = '$pmk'
-        ORDER BY tab.dateTimeStart ASC
+        ORDER BY tab.date_start ASC, tab.time_start ASC
         LIMIT 100";
     
         // prepare query statement
@@ -175,7 +180,7 @@ class Event
     }
 
     public function readLocations(){
-        $stmt = $this->db_conn->prepare("SELECT id, address, geoLatitude, geoLongitude FROM Event");            
+        $stmt = $this->db_conn->prepare("SELECT id, address, geoLatitude, geoLongitude FROM events");            
         if ($stmt->execute() !== TRUE) {
              error("Error while querying `Event` table: " + $stmt->errorInfo());
         } 

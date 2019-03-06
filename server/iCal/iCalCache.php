@@ -1,6 +1,6 @@
 <?php
 include_once '../config/logger.php';
-include_once '../object/Event.php';
+include_once '../object/events.php';
 include_once '../object/misja.php';
 
 include_once 'icsParser.php';
@@ -34,7 +34,7 @@ class iCalCache
         $this->db_conn = $db_conn; 
         $this->iCallocations = new iCalLocations($db_conn);
         $this->locations = $this->iCallocations->getLocations();
-        debug_r("Locations (from location cache)" ,$this->locations);
+        //debug_r("Locations (from location cache)" ,$this->locations);
     }
 
     public function getNextDaysEvents($num_days = 7) {
@@ -59,7 +59,7 @@ class iCalCache
                 echo "<h1>Downloading: " . $nazwa. "</h1>";
                 
                 $isUrl  = strpos($ics_url, 'http') === 0 && filter_var($ics_url, FILTER_VALIDATE_URL);			    
-                info("Donload url: ".$ics_url);
+                info("Download url: ".$ics_url);
                 $content = '';
 			    if ($isUrl) {
                     $content = file_get_contents($ics_url);       
@@ -67,7 +67,7 @@ class iCalCache
                 }   
                                 
                 // PARSE iCAL
-                info("Download and parse received ics file");
+                info("Parse received ics file");
                 $parser = new icsParser();
                 $parser->parse($content);
 

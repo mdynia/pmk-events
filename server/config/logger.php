@@ -6,7 +6,7 @@
         echo "<textarea class='debug'>";	
         if (isset($structure)) {
             print_r ($structure);
-        } else {
+        } else { 
             echo "undefined";
         }        
         echo "</textarea>";	

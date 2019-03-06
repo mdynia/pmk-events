@@ -11,7 +11,7 @@
 
     // include database and object files
     include_once '../config/database.php';
-    include_once '../object/Event.php';
+    include_once '../object/events.php';
     include_once '../object/misja.php';
 
     // PARAM: DAYS 
@@ -51,22 +51,9 @@
     //get results from DB   
     $icalEvents = new Event($db);
     $stmt = $icalEvents->readByPmk($pmk_id, $days);
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        extract($row);
- 
-        $event = array(
-            "id" => $id,
-            "title" => $title,
-            "dateTimeStart" => $dateTimeStart,            
-            "address" => $address,
-            "geoLatitude" => $geoLatitude,
-            "geoLongitude" => $geoLongitude,
-            "description" => html_entity_decode($description)            
-        );
- 
-        array_push($result["events"], $event);
-    }
-    
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){        
+        array_push($result["events"], $row);
+    }    
         
     // set response code - 200 OK
     http_response_code(200);

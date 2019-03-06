@@ -62,16 +62,19 @@ class icsParser {
 	 * Main function to query events in the format required by the pmk tool
 	 * - local time 
 	 */
+
+
 	public function getEvents($start, $end) {
 		$eventList = [];
 
 		// get raw data
-		$events = $this->eventsByDateBetween($start, $end);
-		
-		// map the data to simplified format
-		foreach ($events as $date => $events) {
-			foreach ($events as $event) {
+		$eventsByDate = $this->eventsByDateBetween($start, $end);
+		//debug_r("RAW EVENTS", $eventsByDate);
 
+		// map the data to simplified format
+		foreach ($eventsByDate as $date => $events) {
+			foreach ($events as $event) {
+				info("Processing date: ".$date);
 				array_push($eventList , array(
 					"title" =>$event->title(),
 					"description" => $event->description(),
@@ -83,6 +86,7 @@ class icsParser {
 					"uid" => $event->uid
 				));
 			}
+			
 		}
 
 		return $eventList;
@@ -117,10 +121,18 @@ class icsParser {
 			$this->_eventsByDate = array();
 
 			foreach ($this->events() as $event) {
-				foreach ($event->occurrences() as $occurrence) {
+				$occurenceList = $event->occurrences();
+
+				
+				$dates = array();
+				foreach ($occurenceList as $occurrence) {
 					$date = $occurrence->format('Y-m-d');
 					$this->_eventsByDate[$date][] = $event;
+					array_push($dates,$date);
 				}
+
+				info("Found ".sizeof($occurenceList)." occurences of ".$event->summary."/".$event->dateStart);
+				//debug_r("Occurences", $dates);
 			}
 			ksort($this->_eventsByDate);
 		}

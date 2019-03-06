@@ -7,7 +7,7 @@
 
     // include database and object files
     include_once '../config/database.php';
-    include_once '../object/Event.php';
+    include_once '../object/events.php';
 
     // PARAM: DAYS 
     $days = 7;
@@ -41,23 +41,7 @@
     $stmt = $icalEvents->readByDistance($lat, $lon, $days);
     
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
-        extract($row);
- 
-        $event = array(
-            "id" => $id,
-            "title" => $title,
-            "dateTimeStart" => $dateTimeStart,            
-            "address" => $address,
-            "distance" => $distance,
-            "geoLatitude" => $geoLatitude,
-            "geoLongitude" => $geoLongitude,
-            "description" => html_entity_decode($description)            
-        );
- 
-        array_push($result["records"], $event);
+        array_push($result["records"], $row);
     }
     
     

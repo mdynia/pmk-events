@@ -21,21 +21,20 @@ error_reporting(E_ALL);
 </head>
 <body>
 
-<h1>Connecting to database</h1>
+<h1>Connecting to database </h1>
 <?php
 // Create connection
 $database = new Database();
 $conn = $database->getConnection();
 ?>
 
-<h1>Downloading events</h1>
+
+<h1>Downloading Events</h1>
 <?php
 $iCalCache = new iCalCache($conn);
 $iCalCache->getNextDaysEvents(30);
-
 ?>	
 
-
-
+<h1>DONE</h1>
 </body>
 </html>
