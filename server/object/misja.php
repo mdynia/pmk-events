@@ -35,8 +35,8 @@ class Misja
            if ($stmt->execute() !== TRUE) {
                error("Error `misja` creating table: " + $stmt->errorInfo());
            } 
-           //INSERT INTO misja (nazwa,ics_url, country) VALUES('Kalendarz PMK Bielefeld-Paderborn','https://calendar.google.com/calendar/ical/qu27nqfsmas8lq7cbh4nd7b2ok%40group.calendar.google.com/private-140036b0fd5200ee327aed2b5631a56a/basic.ics', 'de');
-           //INSERT INTO misja (nazwa,ics_url, country) VALUES('Kalendarz Dynia','https://calendar.google.com/calendar/ical/mdynia%40gmail.com/private-ef8d19774e82853c47d317476709f267/basic.ics', 'de');   
+           //INSERT INTO misja (nazwa, ics_url, patron, adres, telefon, fax, email, www, country) VALUES('Kalendarz PMK Bielefeld-Paderborn','https://calendar.google.com/calendar/ical/3gmb7d1b2tip52qq3k0u07udic%40group.calendar.google.com/private-de918e03af951b68f17ce4bca1911a61/basic.ics', '', '', '', '', '', '', 'de');
+           
     }
 
     public function readById($pmk_id) {

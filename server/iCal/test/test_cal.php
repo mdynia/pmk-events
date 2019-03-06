@@ -1,7 +1,6 @@
 <?php
 include_once '../../config/database.php';
-
-include '../icsParser.php';
+include_once'../icsParser.php';
 
 
 ini_set('display_errors', 1);

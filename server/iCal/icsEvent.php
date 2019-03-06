@@ -1,5 +1,5 @@
-﻿<?
-include_once ("icsTimeZone.php");
+﻿<?php
+
 
 class icsEvent {
 

@@ -1,9 +1,6 @@
 <?php
 
-include_once ("icsEvent.php");
-
-class icsParser
-{
+class icsParser {
 	/**
 	 * @var string
 	 */

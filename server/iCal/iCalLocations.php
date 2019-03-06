@@ -51,8 +51,8 @@ class iCalLocations
 
         // GET ICAL FILES FROM DB
 
-        info("Querying `ical_events` table");                
-        $icalEvents = new ical_events($this->db_conn);
+        info("Querying `Event` table");                
+        $icalEvents = new Event($this->db_conn);
         $stmt = $icalEvents->readLocations();
         if ($stmt->rowCount() > 0) {
             // output data of each row

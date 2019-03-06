@@ -1,8 +1,6 @@
 <?php
 include_once '../config/database.php';
-
-include 'iCal.php';
-include 'iCalCache.php';
+include_once 'iCalCache.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -22,17 +20,22 @@ error_reporting(E_ALL);
 	
 </head>
 <body>
-<h1>DOWNLOAD PMK EVENTS</h1>
 
+<h1>Connecting to database</h1>
 <?php
 // Create connection
 $database = new Database();
 $conn = $database->getConnection();
+?>
 
+<h1>Downloading events</h1>
+<?php
 $iCalCache = new iCalCache($conn);
 $iCalCache->getNextDaysEvents(30);
 
-
 ?>	
+
+
+
 </body>
 </html>

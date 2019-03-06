@@ -1,9 +1,13 @@
 <?php
 include_once '../config/logger.php';
-include_once '../object/ical_events.php';
+include_once '../object/Event.php';
 include_once '../object/misja.php';
 
-include 'iCalLocations.php';
+include_once 'icsParser.php';
+include_once "icsEvent.php";
+include_once "icsTimeZone.php";
+include_once 'iCalLocations.php';
+
 
 /*
 *  Class for accessing list of iCal files. 
@@ -34,18 +38,16 @@ class iCalCache
     }
 
     public function getNextDaysEvents($num_days = 7) {
-
-        // server timezone
         $dateFrom = Date('Y-m-d');
         $dateTo = Date('Y-m-d', strtotime("+".$num_days." days"));
 
-        info("Delete everything from `ical_events`");        
-        $icalEvents = new ical_events($this->db_conn);
+        info("Delete everything from `Event`");        
+        $icalEvents = new Event($this->db_conn);
         $icalEvents->createTable();
         $stmt = $icalEvents->deleteTable();
 
 
-        info("Get list of iCal urls from 'misja'");               
+        info("Get list of ics urls from 'misja'");               
         $misja = new Misja($this->db_conn);
         $misja->createTables();
         $stmt = $misja->readAll();
@@ -54,9 +56,10 @@ class iCalCache
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 extract($row);                
 
-                info("Downloading: " . $nazwa);
+                echo "<h1>Downloading: " . $nazwa. "</h1>";
                 
                 $isUrl  = strpos($ics_url, 'http') === 0 && filter_var($ics_url, FILTER_VALIDATE_URL);			    
+                info("Donload url: ".$ics_url);
                 $content = '';
 			    if ($isUrl) {
                     $content = file_get_contents($ics_url);       
@@ -64,23 +67,25 @@ class iCalCache
                 }   
                                 
                 // PARSE iCAL
-                info("Parsing receiver iCal file");
-                $iCal = new iCal();
-                $iCal->parse($content);
-                
+                info("Download and parse received ics file");
+                $parser = new icsParser();
+                $parser->parse($content);
+
                 info("Getting events by date (" . $dateFrom . " - " . $dateTo . ")");
-                $events = $iCal->eventsByDateBetween($dateFrom, $dateTo);
-                
+                $eventList = $parser->getEvents($dateFrom, $dateTo);
+
+                debug_r("Extracted events", $eventList);
+
                 info("Store extracted events");                
-                $eventDbList = $this->mapDbEvents($id, $events);
+                $eventDbList = $this->mapDbEvents($id, $eventList);
+
                 debug_r("Event to be inserted", $eventDbList);
                 $icalEvents->insertEvents($eventDbList);
             }
         }
 
         // check event table for new locations
-        $this->iCallocations->collectEventLocations();
-        
+        $this->iCallocations->collectEventLocations();        
     }
 
 
@@ -89,51 +94,35 @@ class iCalCache
         $addressMap = [];
         $eventList = [];
 
-        if (sizeof($events) > 0) {
-            
-            foreach ($events as $date => $events) {
-	            foreach ($events as $event) {
+        foreach ($events as $event) {
+            extract($event);                
 
-                    // compute location
-                    $geoLatitude = 'NULL';
-                    $geoLongitude = 'NULL';                
-                    if (isset($this->locations[$event->location])) {
-                            $evntLoc = $this->locations[$event->location];
-                        if ($evntLoc["geoLatitude"] && $evntLoc["geoLongitude"]) {
-                            $geoLatitude = $evntLoc["geoLatitude"];
-                            $geoLongitude = $evntLoc["geoLongitude"];                        
-                        } else {                        
-                            error("Geocoding not yet specified in locaiton cache.");                                                
-                        }
-                    
-                    } else {
-                        error("No geocoding found for location: ". $event->location);                                                       
-                    }
+            // compute location
+            $geoLatitude = 'NULL';
+            $geoLongitude = 'NULL';                
+            if (isset($this->locations[$location])) {
+                    $evntLoc = $this->locations[$location];
+                if ($evntLoc["geoLatitude"] && $evntLoc["geoLongitude"]) {
+                    $geoLatitude = $evntLoc["geoLatitude"];
+                    $geoLongitude = $evntLoc["geoLongitude"];                        
+                } else {                        
+                    error("Geocoding not yet specified in locaiton cache.");                                                
+                }
+            } else {
+                error("No geocoding found for location: ". $location);                                                       
+            }
 
+            // add additional fields
+            $event["pmk_id"] = $pmk_id;
+            $event["geoLatitude"] = $geoLatitude;
+            $event["geoLongitude"] = $geoLongitude;
 
-                    $eventDB = array(
-                        "pmk_id" => $pmk_id,
-                        "uid" => $event->uid,
-                        "title" =>$event->title(),
-                        "description" => $event->description(),
-                        "dateTimeStart" => $date.' '.$event->godzina.':00',
-                        "address" => $event->location,
-                        "geoLatitude" =>$geoLatitude,
-                        "geoLongitude" => $geoLongitude,
-                        "country" => "de"
-                    );
+            array_push($eventList ,$event);                    
 
-                    array_push($eventList ,$eventDB);                    
-
-                    $addressMap[$event->location] = "address";
-		        }
-	        }
-
-            return $eventList;            
+            $addressMap[$location] = "address";
         }
-
+    
+        return $eventList;            
     }
-
-
 }
 ?>

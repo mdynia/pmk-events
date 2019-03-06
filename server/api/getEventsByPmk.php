@@ -11,7 +11,7 @@
 
     // include database and object files
     include_once '../config/database.php';
-    include_once '../object/ical_events.php';
+    include_once '../object/Event.php';
     include_once '../object/misja.php';
 
     // PARAM: DAYS 
@@ -49,7 +49,7 @@
     
     $result["events"] = [];    
     //get results from DB   
-    $icalEvents = new ical_events($db);
+    $icalEvents = new Event($db);
     $stmt = $icalEvents->readByPmk($pmk_id, $days);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);

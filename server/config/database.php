@@ -4,10 +4,9 @@ class Database{
 
     // specify your own database credentials
     private $host = "localhost";
-    private $db_name = "pmk_events";
+    private $db_name = "events";
     private $username = "mdynia";
-    private $password = "";
-
+    private $password = "bXpwpA?KvgRMDb5jB4l-*&1j";
 
     public $conn;
  
@@ -16,11 +15,12 @@ class Database{
  
         $this->conn = null;
  
-        try{
+        try
+        {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
             $this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
             $this->conn->exec("set names utf8");
-        }catch(PDOException $exception){
+        } catch(PDOException $exception){
             echo "Connection error: " . $exception->getMessage();
         }
  
