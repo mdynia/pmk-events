@@ -1,3 +1,2 @@
 # pmkApp
-Android App Polskiej Misji Katolickiejdsss
-ss
+Android App Polskiej Misji Katolickiej
