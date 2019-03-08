@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">PMK</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_title">Miroslaw Dynia</string>
+    <string name="nav_header_subtitle">Polska Misja Katolicka</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="nav_nabozenstwa">Nabożeństwa</string>
+    <string name="nav_spowiedz">Spowiedź</string>
+    <string name="nav_rekolekcje">Rekolekcje</string>
+    <string name="nav_send">Inne</string>
+
+</resources>

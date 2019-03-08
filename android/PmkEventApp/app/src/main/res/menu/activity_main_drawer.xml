@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_new_order"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_nabozenstwa" />
+
+        <item
+            android:id="@+id/nav_installed_base"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/nav_spowiedz" />
+
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/nav_nabozenstwa" />
+
+
+    </group>
+
+    <item >
+        <menu>
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Mein Konto" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Einstellungen" />
+            <item
+                android:id="@+id/nav_tnc"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Impressum" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Weiterempfehlen" />
+        </menu>
+    </item>
+
+</menu>
