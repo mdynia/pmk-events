@@ -90,41 +90,42 @@ class Event
     
 
     // Read events by distance
-    public function readByDistance($lat, $lon, $days = 7) {
+    public function readByDistance($lat, $lon, $days = 7, $maxDistance=100) {
 
         $dateFrom   = date('Y-m-d');
         $dateTo     = date('Y-m-d', strtotime("+".$days." days"));
 
         $query = "SELECT 
-        tab.id,
-        tab.uid,
-        tab.pmk_id,
-        tab.title, 
-        tab.description, 
-        tab.date_start,
-        tab.time_start,
-        tab.date_end,
-        tab.time_end,
-        tab.duration,
-        tab.address, 
-        tab.geoLatitude, 
-        tab.geoLongitude, 
-        tab.country,
+        id,
+        uid,
+        pmk_id,
+        title, 
+        description, 
+        date_start,
+        time_start,
+        date_end,
+        time_end,
+        duration,
+        address, 
+        geoLatitude, 
+        geoLongitude, 
+        country,
         ceil( 
             100 * 6371 * acos( 
                 cos(  radians($lat) )
-              * cos(  radians( tab.geoLatitude )  )
-              * cos(  radians( tab.geoLongitude) - radians($lon) )
+              * cos(  radians( geoLatitude )  )
+              * cos(  radians( geoLongitude) - radians($lon) )
               + sin( radians($lat) )
-              * sin( radians( tab.geoLatitude ) )
+              * sin( radians( geoLatitude ) )
             )
-        ) / 100.0 AS distance 
-        FROM events tab     
-        WHERE tab.date_start >= '$dateFrom' 
-        AND tab.date_start < '$dateTo'  
-        AND tab.geoLatitude  > 0
-        ORDER BY distance ASC, tab.date_start ASC, tab.time_start ASC
-        LIMIT 100";
+        ) / 100.0 AS distance
+        FROM events        
+        WHERE date_start >= '$dateFrom'                 
+        AND date_start < '$dateTo'  
+        AND geoLatitude  > 0
+        HAVING distance < $maxDistance
+        ORDER BY date_start ASC, time_start ASC
+        LIMIT 100";        
     
         // prepare query statement
         $stmt = $this->db_conn->prepare($query);

@@ -8,6 +8,7 @@
     // include database and object files
     include_once '../config/database.php';
     include_once '../object/events.php';
+    include_once '../object/misja.php';
 
     // PARAM: DAYS 
     $days = 7;
@@ -36,14 +37,14 @@
     $result = [];
     $result["records"] = [];
     
+    
+    
     //get results
     $icalEvents = new Event($db);    
-    $stmt = $icalEvents->readByDistance($lat, $lon, $days);
-    
+    $stmt = $icalEvents->readByDistance($lat, $lon, $days, 100);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         array_push($result["records"], $row);
-    }
-    
+    }   
     
         
     // set response code - 200 OK
