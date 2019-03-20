@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1.0" client="site" method="upgrade">
+	<name>Moduł Wydarzeń Duszpasterstwa Polskojęzycznego</name>
+	<author>Miroslaw Dynia</author>
+	<version>1.0.2</version>
+	<description>Ten modu pokazuje wszystkie wydarzenia (Msze Święte, nabożeństwa, spowiedź, etc.) dla danej misji katolickiej</description>
+	<creationDate>Marzec 2019</creationDate>
+	<files>
+		<filename>mod_pmk_events.xml</filename>
+		<filename module="mod_pmk_events">mod_pmk_events.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<filename>script.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+				<field name="api_key" type="text" default="23785934789573489578934" label="Klucz API potrzebny do integracji" />
+
+				<field name="servername" type="text" default="http://www.pmk-bielefeld.de" label="Serwer na którym umiszczona jest baza wydarzeń" />
+
+				<field name="api_url" type="text" default="/pmkEvents/api/" label="Fragment URL do API wydarzeń" />
+
+				<field name="date_format" type="text" default="see php/strftime" label="Format daty (php/strftime)" />
+
+				<field name="filtr_typ_wydarzenia" type="text" default="" label="Typ wydarzeń pokazywany przez moduł." />
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>
