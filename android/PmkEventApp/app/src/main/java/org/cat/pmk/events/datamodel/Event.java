@@ -66,6 +66,15 @@ public class Event {
         return "";
     }
 
+    public String getType() {
+        try {
+            return record.getString("type");
+        } catch (Exception e) {
+            System.err.println("ERROR: " + e);
+        }
+        return "";
+    }
+
     public String getTitle() {
         try {
             return record.getString("title");

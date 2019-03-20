@@ -39,7 +39,7 @@ public class FragmentEventsByDistance extends Fragment implements AdapterView.On
 
     private static AdapterEvent ibAdapter;
 
-    public static boolean spowiedzFilter;
+    public static String filterEventType;
 
     private float geoLat = 51.755828f;
     private float geoLon = 8.777529f;
@@ -50,8 +50,8 @@ public class FragmentEventsByDistance extends Fragment implements AdapterView.On
         this.ctx = context;
     }
 
-    public void setEventTypeFilter(boolean filter) {
-        this.spowiedzFilter = filter;
+    public void setEventTypeFilter(String filter) {
+        this.filterEventType = filter;
     }
 
     public void setBackground(int backgroundImageResourceId) {
@@ -115,19 +115,14 @@ public class FragmentEventsByDistance extends Fragment implements AdapterView.On
                 for (int i = 0; i < records.length(); i++) {
                     JSONObject record = (JSONObject) records.get(i);
                     Event e = new Event(record);
-                    if (spowiedzFilter) {
-                        if (e.getTitle() != null && e.getTitle().toLowerCase().contains("spowiedź")) {
-                            EVENTS.add(e);
-                        }
-                    } else {
-                        if (e.getTitle() != null && !e.getTitle().toLowerCase().contains("spowiedź")) {
-                            EVENTS.add(e);
-                        }
+                    Log.i("event","Checking: " + e);
+                    if (filterEventType.equals(e.getType())) {
+                       EVENTS.add(e);
                     }
                 }
             }
         } catch (Exception e) {
-            System.err.println("ERROR: " + e);
+            Log.e("event","ERROR: " + e);
         }
 
         ibAdapter = new AdapterEvent(EVENTS, cntx);

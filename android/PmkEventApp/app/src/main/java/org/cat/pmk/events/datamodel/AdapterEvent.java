@@ -130,7 +130,7 @@ public class AdapterEvent extends ArrayAdapter<Event> implements View.OnClickLis
         viewHolder.txtData.setText(event.getStartDate());
         String address = event.getAddress();
         if (event.getDistance() > 1) {
-            address += " \nOdległość ok."+event.getDistance()+" km";
+            address += " \nOdległość ok. "+event.getDistance()+" km";
         } else {
             address += " \nBardzo blisko Ciebie.";
         }

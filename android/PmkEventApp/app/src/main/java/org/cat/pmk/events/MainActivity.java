@@ -101,33 +101,37 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_main) {
             MainActivity.this.setTitle(getString(R.string.nav_main));
-
-            // enable a fragment
             FragmentMainWindow fragment = new FragmentMainWindow();
             fragment.setActivity(this);
             MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else if (id == R.id.nav_nabozenstwa) {
             MainActivity.this.setTitle(getString(R.string.nav_nabozenstwa));
-
-            // enable a fragment
             FragmentEventsByDistance fragment = new FragmentEventsByDistance();
             fragment.setContext(getApplicationContext());
-            fragment.setEventTypeFilter(false);
+            fragment.setEventTypeFilter("msza");
             fragment.setBackground(R.drawable.kosciol_wnetrze);
             MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else if (id == R.id.nav_spowiedz) {
             MainActivity.this.setTitle(getString(R.string.nav_spowiedz));
-
-            // enable a fragment
             FragmentEventsByDistance fragment = new FragmentEventsByDistance();
             fragment.setContext(getApplicationContext());
-            fragment.setEventTypeFilter(true);
+            fragment.setEventTypeFilter("spowiedz");
             fragment.setBackground(R.drawable.konfesjonal);
             MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else if (id == R.id.nav_terminy) {
-
+            MainActivity.this.setTitle(getString(R.string.nav_terminy));
+            FragmentEventsByDistance fragment = new FragmentEventsByDistance();
+            fragment.setContext(getApplicationContext());
+            fragment.setEventTypeFilter("wydarzenie");
+            fragment.setBackground(R.drawable.spotkanie);
+            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else if (id == R.id.nav_rekolekcje) {
-
+            MainActivity.this.setTitle(getString(R.string.nav_rekolekcje));
+            FragmentEventsByDistance fragment = new FragmentEventsByDistance();
+            fragment.setContext(getApplicationContext());
+            fragment.setEventTypeFilter("rekolekcje");
+            fragment.setBackground(R.drawable.rekolekcje);
+            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
