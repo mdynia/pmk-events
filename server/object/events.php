@@ -110,6 +110,7 @@ class Event
         $query = "SELECT 
         id,
         uid,
+        type,
         pmk_id,
         title, 
         description, 

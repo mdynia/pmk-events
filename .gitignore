@@ -1,4 +1,6 @@
 server/deploy.sh
-.vscode/sftp.json
-server/.vscode/sftp.json
+.vscode/
+server/.vscode/
 modules/joomla_3.9.4/mod_pmk_events/.vs/
+android/PmkEventApp/.idea/
+
