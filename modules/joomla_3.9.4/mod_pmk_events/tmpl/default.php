@@ -1,7 +1,9 @@
 <?php 
 // No direct access
 defined('_JEXEC') or die; 
+?>
 
+<?
 function renderSection($type, $arrayEvents, $eventList) {
 	$dateFormat = $eventList->params["date_format"];
 	?>
@@ -54,8 +56,7 @@ if (true == $eventList->params["pokaz_spowiedz"]) {
 
 <!-- WYDARZENIA -->
 <?
-if (true == $eventList->params["pokaz_wydarzenie"]) 
-{	
+if (true == $eventList->params["pokaz_wydarzenie"]) {	
 	renderSection("wydarzenie", $arrayEvents, $eventList);
 }
 ?>
