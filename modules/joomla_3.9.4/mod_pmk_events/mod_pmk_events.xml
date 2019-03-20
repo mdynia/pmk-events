@@ -18,6 +18,8 @@
 		<fields name="params">
 			<fieldset name="basic">
 
+				<field name="user_id" type="text" default="1" label="User id" />
+
 				<field name="api_key" type="text" default="23785934789573489578934" label="Klucz API potrzebny do integracji" />
 
 				<field name="servername" type="text" default="http://www.pmk-bielefeld.de" label="Serwer na którym umiszczona jest baza wydarzeń" />
@@ -26,7 +28,16 @@
 
 				<field name="date_format" type="text" default="see php/strftime" label="Format daty (php/strftime)" />
 
-				<field name="filtr_typ_wydarzenia" type="text" default="" label="Typ wydarzeń pokazywany przez moduł." />
+				<field name="days" type="text" default="7" label="Liczba dni przyszłych wydarzeń." />
+
+				<field name="pokaz_msza" type="boolean" default="true" label="Czy msze mają być pokazywane?" />
+				<field name="pokaz_msza_label" type="text" default="Msza Święte" label="Tytuł seksji 'Msza Święta'"/>
+
+				<field name="pokaz_spowiedz" type="boolean" default="true" label="Czy spowiez ma być pokazywana?" />
+				<field name="pokaz_spowiedz_label" type="text" default="Spowiedź" label="Tytuł seksji 'Spowiedź'"/>
+
+				<field name="pokaz_wydarzenie" type="boolean" default="true" label="Czy inne wydarzenia mają być pokazywane?" />
+				<field name="pokaz_wydarzenie_label" type="text" default="Wydarzenia" label="Tytuł seksji 'Wydarzenia'"/>
 
 			</fieldset>
 		</fields>

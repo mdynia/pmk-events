@@ -19,9 +19,11 @@ class PmkEventList
         $servername = $params->get('servername', '');
         $api_url = $params->get('api_url', '');
         $api_key = $params->get('api_key', '');
-        $filtr_typ_wydarzenia = $params->get('filtr_typ_wydarzenia', '');
+        $days = $params->get('days', '');
+        $user_id = $params->get('user_id', '');
+        
 
-        $url = $servername . $api_url . "getEventsByPmk.php?days=14&pmk=1";
+        $url = $servername . $api_url . "getEventsByPmk.php?days=".$days."&pmk=".$user_id."&api_key=".$api_key;
         //echo $url;
 
         $this->eventsJson = PmkEventList::CallAPI("GET", $url, "username", "password");
