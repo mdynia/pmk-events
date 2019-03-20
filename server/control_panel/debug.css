@@ -24,6 +24,7 @@
 }
 
 .info_msg {
+	display: none;
 	border: 1px solid #5a7c7c;	
 	background-color: #91e0e0;
 }
