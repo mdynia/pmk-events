@@ -1,0 +1,44 @@
+.debug_msg {
+	display: block;
+}
+
+.debug {
+	background-color: powderblue;
+	width: 70%;
+    height: 100px;
+}
+
+.debugHeader {
+	background-color: #171a1b;
+	color: white;
+	width: 100%;
+}
+
+.debug_msg {
+	display: block;
+    border-radius: 6px;
+    border: 1px solid #5a7c7c;
+	padding: 5px;
+	padding-left: 10px;
+	margin: 3px;	
+}
+
+.info_msg {
+	border: 1px solid #5a7c7c;	
+	background-color: #91e0e0;
+}
+
+.iCalLocations {
+	background-color: #64fd9f;
+	
+}
+
+.iCalCache{
+	background-color: #91e0e0;
+}
+
+.error_msg {
+    border: 1px solid #5a7c7c;
+	background-color: #cc1d2b;
+}
+

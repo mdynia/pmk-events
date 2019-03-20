@@ -1,12 +1,12 @@
 <?php
 
-class Database{
+class Database {
 
     // specify your own database credentials
-    private $host = "localhost";
-    private $db_name = "events";
-    private $username = "mdynia";
-    private $password = "bXpwpA?KvgRMDb5jB4l-*&1j";
+    private $host = "rdbms.strato.de";
+    private $db_name = "DB3697321";
+    private $username = "U3697321";
+    private $password = "ezqyCIUkATgJ99zr2dJh"; 
 
     public $conn;
  

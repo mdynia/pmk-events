@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include_once '../config/logger.php';
+include_once __DIR__ . '/../config/logger.php';
 
 class Misja
 {
@@ -18,17 +18,21 @@ class Misja
     public function createTables() {           
            info("Checking existiance of `misja` table");                
            $sql = "CREATE TABLE IF NOT EXISTS misja (
-                   id               INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-                   nazwa            VARCHAR(255) NOT NULL,
-                   patron           VARCHAR(255) NOT NULL,
-                   adres            VARCHAR(255) NOT NULL,
-                   telefon          VARCHAR(255) NOT NULL,
-                   fax              VARCHAR(255) NOT NULL,
-                   email            VARCHAR(255) NOT NULL,
-                   www              VARCHAR(255) NOT NULL,
-                   country          VARCHAR(2) NOT NULL,
-                   ics_url          VARCHAR(500) NOT NULL,                   
-                   last_download    TIMESTAMP
+                   id                   INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+                   nazwa                VARCHAR(255) NOT NULL,
+                   patron               VARCHAR(255) NOT NULL,
+                   adres                VARCHAR(255) NOT NULL,
+                   telefon              VARCHAR(255) NOT NULL,
+                   fax                  VARCHAR(255) NOT NULL,
+                   email                VARCHAR(255) NOT NULL,
+                   www                  VARCHAR(255) NOT NULL,
+                   country              VARCHAR(2) NOT NULL,
+                   ics_url              VARCHAR(500) NOT NULL,                   
+                   ics_url_msze         VARCHAR(500) NOT NULL,                   
+                   ics_url_spowiedz     VARCHAR(500) NOT NULL,                   
+                   ics_url_wydarzenia   VARCHAR(500) NOT NULL,                   
+                   ics_url_rekolekcje   VARCHAR(500) NOT NULL,                   
+                   last_download        TIMESTAMP
            )";
    
            $stmt = $this->db_conn->prepare($sql);            

@@ -3,7 +3,7 @@
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
 
-include_once '../config/logger.php';
+include_once __DIR__.'/../config/logger.php';
 
 class Event
 {
@@ -14,7 +14,6 @@ class Event
         $this->db_conn = $db_conn;         
     }
 
-    
     public function createTable() {
         // TABLE FOR ICAL FILES 
         info("Checking existiance of `events` table");                
@@ -29,6 +28,7 @@ class Event
            duration        INT,
            title           VARCHAR(255) NOT NULL,
            description     VARCHAR(1000),
+           type            VARCHAR(255) NOT NULL,
            address         VARCHAR(1000),
            geoLatitude     DECIMAL(5,3),
            geoLongitude    DECIMAL(5,3),
@@ -47,12 +47,13 @@ class Event
     public function insertEvents($eventsList = []) {
 
         $separator = '';
-        $sql = 'INSERT INTO events (pmk_id, uid, title, description, date_start, time_start, date_end, time_end, address, geoLatitude, geoLongitude, country) values ';
+        $sql = 'INSERT INTO events (pmk_id, type, uid, title, description, date_start, time_start, date_end, time_end, address, geoLatitude, geoLongitude, country) values ';
 
         foreach($eventsList as $event) {
             extract($event); 
             $sql .= $separator . " (";
             $sql .= "'$pmk_id', ";
+            $sql .= "'$type', ";
             $sql .= "'$uid', ";
             $sql .= "'$title', ";
             $sql .= "'$description', ";
@@ -79,6 +80,17 @@ class Event
 
     }
 
+    public function deleteByOrganizer($organizer_id) {
+        if (isset($organizer_id)) {
+            $stmt = $this->db_conn->prepare('DELETE FROM events WHERE `pmk_id`='.$organizer_id);            
+            if ($stmt->execute() !== TRUE) {
+                error("Error deleting from `events` table");
+            } 
+            return $stmt;
+        } 
+        return null;
+    }
+    
 
     public function deleteTable() {
         $stmt = $this->db_conn->prepare('DELETE FROM events');            
@@ -148,6 +160,7 @@ class Event
         tab.id,
         tab.uid,
         tab.pmk_id,        
+        tab.type,  
         tab.title, 
         tab.description, 
         tab.id,
