@@ -1,0 +1,107 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#F0FFFFFF"
+    android:padding="10dp"
+    >
+
+
+    <LinearLayout
+        android:id="@+id/date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        >
+        <TextView
+            android:id="@+id/ib_row_godzina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Czwartek, 12:45"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ib_row_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="13 maj 2019"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/ib_row_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date"
+        >
+
+
+        <TextView
+            android:id="@+id/ib_row_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="18dp"
+            android:text="Adoracja Najśw. Sakramentu - St. Bonifatius"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            />
+
+        <ImageView
+            android:id="@+id/ib_row_icon_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_share" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ib_row_buttons2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ib_row_buttons"
+        >
+
+
+        <TextView
+            android:id="@+id/ib_row_adres"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ib_row_title"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="18dp"
+            android:text="Anemonenweg 22, 33106 Paderborn
+Odległość ok. 30km"
+            android:textColor="@android:color/black"
+            android:autoLink="web"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/ib_row_icon_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_mapmode"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

@@ -1,8 +1,8 @@
 package org.cat.pmk.events;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,39 +11,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.json.JSONObject;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
-import java.util.ArrayList;
-
-import org.cat.pmk.events.datamodel.Order;
-import org.cat.pmk.events.datamodel.OrderAdapter;
-import org.cat.pmk.events.fragments.FragmentInstalledBaseManager;
+import org.cat.pmk.events.fragments.FragmentEventsByDistance;
 import org.cat.pmk.events.fragments.FragmentMainWindow;
-import org.cat.pmk.events.fragments.FragmentNewOrder;
-import org.cat.pmk.events.fragments.FragmentOrders;
-import org.cat.pmk.events.sfdc.SfdcRestApi;
-import org.cat.pmk.events.sfdc.QueryResponseHandler;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String PREFERENCES_GEO = "geo-location-user";
 
-    // New tags for referring to fragments
-    public static final String FRAGMENT_TAG_NEW_ORDER = "tag_new_order";
-    public static final String FRAGMENT_TAG_IB_LIST = "tag_ib_list";
-
-    public static String accountID2 = "ACC-MIRO-123";
-
-    private static OrderAdapter orderAdapter;
 
     public static FragmentManager fragmentManager;
 
-    private static final ArrayList<Order> orders = new ArrayList<>();
+    private FusedLocationProviderClient fusedLocationClient;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int res = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,27 +52,14 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
-
         // enable a fragment
         FragmentMainWindow fragment = new FragmentMainWindow();
+        fragment.setActivity(this);
 
         MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
 
-
-        //refresh session ID
-        SfdcRestApi.refreshSessionId(this.getApplicationContext(), new QueryResponseHandler() {
-            @Override
-            public void handleResponse(JSONObject response) {
-                System.out.println("RAW: " + response);
-
-                try {
-                    SfdcRestApi.sessionId = response.getString("access_token");
-                } catch (Exception e) {
-                    System.err.println("ERROR: " + e.getLocalizedMessage());
-                }
-            }
-        });
     }
+
 
     @Override
     public void onBackPressed() {
@@ -119,41 +99,35 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_installed_base) {
+        if (id == R.id.nav_main) {
+            MainActivity.this.setTitle(getString(R.string.nav_main));
+
+            // enable a fragment
+            FragmentMainWindow fragment = new FragmentMainWindow();
+            fragment.setActivity(this);
+            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        } else if (id == R.id.nav_nabozenstwa) {
+            MainActivity.this.setTitle(getString(R.string.nav_nabozenstwa));
+
+            // enable a fragment
+            FragmentEventsByDistance fragment = new FragmentEventsByDistance();
+            fragment.setContext(getApplicationContext());
+            fragment.setEventTypeFilter(false);
+            fragment.setBackground(R.drawable.kosciol_wnetrze);
+            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        } else if (id == R.id.nav_spowiedz) {
             MainActivity.this.setTitle(getString(R.string.nav_spowiedz));
 
             // enable a fragment
-            FragmentInstalledBaseManager fragment = new FragmentInstalledBaseManager(getApplicationContext());
+            FragmentEventsByDistance fragment = new FragmentEventsByDistance();
+            fragment.setContext(getApplicationContext());
+            fragment.setEventTypeFilter(true);
+            fragment.setBackground(R.drawable.konfesjonal);
             MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        } else if (id == R.id.nav_terminy) {
 
+        } else if (id == R.id.nav_rekolekcje) {
 
-        } else if (id == R.id.nav_new_order) {
-            // set title
-            MainActivity.this.setTitle(getString(R.string.nav_nabozenstwa));
-
-            // enable a fragment
-            FragmentNewOrder fragment = new FragmentNewOrder();
-            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
-        } else if (id == R.id.nav_orders) {
-            MainActivity.this.setTitle(getString(R.string.nav_nabozenstwa));
-
-            // enable a fragment
-            FragmentOrders fragment = new FragmentOrders(getApplicationContext());
-            MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
-        } else if (id == R.id.nav_share) {
-            // refresh session ID
-            SfdcRestApi.refreshSessionId(this.getApplicationContext(), new QueryResponseHandler() {
-                @Override
-                public void handleResponse(JSONObject response) {
-                    System.out.println("RAW: " + response);
-
-                    try {
-                        SfdcRestApi.sessionId = response.getString("access_token");
-                    } catch (Exception e) {
-                        System.err.println("ERROR: " + e.getLocalizedMessage());
-                    }
-                }
-            });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
