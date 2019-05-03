@@ -18,17 +18,11 @@
 		<fields name="params">
 			<fieldset name="basic">
 
-				<field name="user_id" type="text" default="1" label="User id" />
+				<field name="user_id" type="text" default="1" label="Identyfikator ośrodka w portalu Duszpolonia.org" />
 
 				<field name="api_key" type="text" default="23785934789573489578934" label="Klucz API potrzebny do integracji" />
 
-				<field name="servername" type="text" default="http://www.pmk-bielefeld.de" label="Serwer na którym umiszczona jest baza wydarzeń" />
-
-				<field name="api_url" type="text" default="/pmkEvents/api/" label="Fragment URL do API wydarzeń" />
-
 				<field name="date_format" type="text" default="see php/strftime" label="Format daty (php/strftime)" />
-
-				<field name="days" type="text" default="7" label="Liczba dni przyszłych wydarzeń." />
 
 				<field name="pokaz_msza" type="boolean" default="true" label="Czy msze mają być pokazywane?" />
 				<field name="pokaz_msza_label" type="text" default="Msza Święte" label="Tytuł seksji 'Msza Święta'"/>

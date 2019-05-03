@@ -16,14 +16,14 @@ class PmkEventList
     {
         // Parameters
         $params = $this->params;
+        
         $servername = $params->get('servername', '');
         $api_url = $params->get('api_url', '');
         $api_key = $params->get('api_key', '');
         $days = $params->get('days', '');
         $user_id = $params->get('user_id', '');
         
-
-        $url = $servername . $api_url . "getEventsByPmk.php?days=".$days."&pmk=".$user_id."&api_key=".$api_key;
+        $url = "https://www.duszpolonia.org/index.php?option=com_api&format=json&app=eventsapi&resource=hosts&key=".$api_key."&hostid=".$user_id;
         //echo $url;
 
         $this->eventsJson = PmkEventList::CallAPI("GET", $url, "username", "password");

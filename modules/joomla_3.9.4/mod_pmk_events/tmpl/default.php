@@ -36,8 +36,9 @@ function renderSection($type, $arrayEvents, $eventList) {
 <?
 setlocale(LC_ALL, 'pl_PL.UTF-8');
 $response = json_decode($eventList->eventsJson, true); // decode json
-$pmk = $response["pmk"];
-$arrayEvents = $response["events"];
+$pmk = $response["data"]["hosts"][0];
+$arrayEvents = $response["data"]["events"];
+//var_dump($arrayEvents);
 ?>
 
 <!-- MSZE ŚWIĘTE -->
