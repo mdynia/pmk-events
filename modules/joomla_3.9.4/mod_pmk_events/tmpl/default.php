@@ -57,8 +57,8 @@ if (true == $eventList->params["pokaz_spowiedz"]) {
 
 <!-- WYDARZENIA -->
 <?
-if (true == $eventList->params["pokaz_wydarzenie"]) {	
-	renderSection("wydarzenie", $arrayEvents, $eventList);
+if (true == $eventList->params["pokaz_spotkanie"]) {	
+	renderSection("spotkanie", $arrayEvents, $eventList);
 }
 ?>
 </div>
